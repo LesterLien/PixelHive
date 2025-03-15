@@ -1,0 +1,48 @@
+.navbar {
+    background-color: #879A77;
+    font-size: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+    font-size: 20px;
+    transition: all 300ms;
+}
+
+.nav-link {
+    font-size: 16px;
+    transition: all 300ms;
+}
+
+.navbar-brand:hover {
+    font-weight: bold;
+    font-size-adjust: 25px;
+}
+
+.nav-link:hover {
+    font-weight: bold;
+    font-size-adjust: 19px;
+}
+
+.user .dropdown-menu {
+    background-color: #C9AD93;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user .dropdown-menu .dropdown-item {
+    background-color: #C9AD93;
+    font-size: 16px;
+    transition: all 300ms;
+    font-weight: normal;
+
+}
+
+.user .dropdown-menu .dropdown-item:hover {
+    font-weight: bold;
+    font-size-adjust: 19px;
+}
+
+.icon {
+    font-size: 20px;
+    margin-top: 10px;
+}
