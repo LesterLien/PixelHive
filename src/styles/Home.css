@@ -1,5 +1,5 @@
 .home-body {
     background-color: #D7E5F0;
-    height: 100vh;
+    height: max-content;
     margin: 0;
 }
