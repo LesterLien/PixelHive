@@ -1,0 +1,15 @@
+.image {
+    width: 80%;
+    height: 80%;
+}
+
+.gamesLayout {
+    display: flex;
+    flex-direction: row;
+    margin-left: 40px;
+}
+
+.bodyLayout {
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
