@@ -7,9 +7,11 @@ import Footer from './components/Footer';
 function App() {
   return (
     <BrowserRouter>
-      <NavBar/>
+    <div className="app-body">
+    <NavBar/>
       <Navigator/>
       <Footer/>
+    </div>
     </BrowserRouter>
   );
 }

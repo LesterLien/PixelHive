@@ -21,18 +21,23 @@ function Games() {
 
     }, [])
 
-    const first10Games = game?.slice(0,10)
+    const first30Games = game?.slice(0,30)
 
     return (
         <div className="bodyLayout">
             <h1>Games</h1>
 
             <div className="gamesLayout">
-            {first10Games?.map((game, _index) => (
-                <div key={_index}>
-                    {game.assets?.boxart && <img className="image" src={game.assets.boxart} alt="Game Boxart"/>}
+            {first30Games?.map((game, _index) => (
+                <div key={_index} className="game">
+                    {game.assets?.boxart && <img src={game.assets.boxart} alt="Game Boxart"/>}
                     <p>{game.title}</p>
                 </div>))}
+            </div>
+            <div className="buttonLoad">
+                <button>
+                    Load More
+                </button>
             </div>
         </div>
 

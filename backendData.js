@@ -19,7 +19,7 @@ app.get('/game', (req,res) => {
         url: 'https://api.isthereanydeal.com/games/search/v1',
         params: {
             title: '',
-            results: 5,
+            results: 30,
             key: process.env.REACT_APP_API_KEY,
         }
 
