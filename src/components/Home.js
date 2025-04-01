@@ -1,13 +1,11 @@
 import '../styles/Home.css';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 
 function Home() {
     return (
-        <div className="home-body">
-            <NavBar/>
-            
-            <Footer/>
+        <div className="buttonSearch">
+            <button>
+                Search
+            </button>
         </div>
     );
 }

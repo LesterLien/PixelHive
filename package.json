@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-navigation/native": "^7.0.15",
+    "@react-navigation/native-stack": "^7.2.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.8.3",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
@@ -17,7 +24,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start:backend": "nodemon server.js",
+    "start:frontend": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -39,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-router-dom": "^7.3.0"
   }
 }

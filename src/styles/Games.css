@@ -1,0 +1,36 @@
+.game{
+    width: 20%;
+    padding: 5px;
+    box-sizing: border-box;
+    padding-bottom: 45px;
+}
+
+.game img {
+    max-width: 100%;
+    max-height: 100%;
+    border: 1px solid black;
+}
+
+
+.gamesLayout {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.bodyLayout {
+    padding-bottom: 50px;
+}
+
+.buttonLoad {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.buttonLoad button {
+    background-color: #73787C;
+}
+
+.buttonLoad button:hover {
+    background-color: #879A77;
+}
