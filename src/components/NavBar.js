@@ -6,15 +6,18 @@ import { NavDropdown } from 'react-bootstrap';
 import '../styles/NavBar.css';
 import { BsFillPersonFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import logo from '../images/logo.webp';
 
 function NavBar() {
     return (
-        <Navbar expand="lg" className="navbar">
-        <Container>
-            <Navbar.Brand as={Link} to="/">PixelHive</Navbar.Brand>
+        <Navbar className="navbar">
+            <Navbar.Brand as={Link} to="/" className="me-auto">
+            <img src={logo} alt="PixelHive Logo" className="logo" />
+            PixelHive
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" >
-                <Nav className="me-auto nav-text">
+                <Nav className="nav-text">
                     <Nav.Link as={Link} to="/games">Games</Nav.Link>
                     <Nav.Link as={Link} to="/favorites">Favorites</Nav.Link>
                     <Nav.Link as={Link} to="/wishlist">Wishlist</Nav.Link>
@@ -28,7 +31,6 @@ function NavBar() {
                 </NavDropdown>
             </Nav>
             </Navbar.Collapse>
-        </Container>
         </Navbar>
     );
 }

@@ -45,15 +45,30 @@ function Games() {
 
     return (
         <div className="bodyLayout">
-            <h1>Games</h1>
+            <h1 className="title">Games</h1>
 
             <div className="gamesLayout">
                 {games.map((game) => (
                     <div key={game.itadID} className="game">
                         {game.image && <img src={game.image} alt={game.name} />}
-                        <p>{game.name}</p>
-                        <p>{gamePrices[game.itadID]?.priceRegular}</p>
-                        <p>{gamePrices[game.itadID]?.priceDiscount}</p>
+                        <div className="content">
+                            <div className="name" data-name={game.name}>
+                                    <span>{game.name}</span>
+                            </div>
+                            <div className="price">
+                                <div>
+                                    <span>
+                                    {gamePrices[game.itadID]?.priceRegular}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span>
+                                        {gamePrices[game.itadID]?.priceDiscount} 
+                                    </span>                                   
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
