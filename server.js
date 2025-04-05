@@ -63,7 +63,7 @@ app.get('/gameItad', async (req, res) => {
 });
 
 app.post('/gameInfo', async (req, res) => {
-    const { itadIDs } = req.body;
+    const { itadIDs, imageType } = req.body;
 
     if (!itadIDs || !Array.isArray(itadIDs) || itadIDs.length === 0) {
         return res.status(400).json({ error: "No ITAD IDs provided" });
@@ -83,7 +83,7 @@ app.post('/gameInfo', async (req, res) => {
                 return {
                     itadID,
                     name: gameInfo.title,
-                    image: gameInfo.assets?.boxart || null,
+                    image: gameInfo.assets?.[imageType] || null,
                 };
             } catch (error) {
                 console.error(`Error fetching info for itadID ${itadID}`, error);
@@ -151,6 +151,52 @@ app.post('/game', async (req, res) => {
     } catch (error) {
         console.error("Error fetching price data:", error);
         res.status(500).json({ error: "Error fetching price data" });
+    }
+});
+
+
+app.get('/gamePopular', async (req, res) => {
+    try {
+        let nonMatureGames = [];
+        let offset = 0;
+        const batchSize = 20; 
+
+        while (nonMatureGames.length < 8) {
+            const gameListResponse = await axios.get('https://api.isthereanydeal.com/stats/most-popular/v1', {
+                params: {
+                    key: process.env.REACT_APP_ITAD_API_KEY,
+                    limit: batchSize,
+                    offset: offset,
+                }
+            });
+
+            const games = gameListResponse.data || [];
+            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 200);
+
+            nonMatureGames = nonMatureGames.concat(nonMatureBatch);
+
+            offset += batchSize; 
+
+            if (games.length < batchSize) {
+                break; 
+            }
+        }
+
+        if (!nonMatureGames.length) {
+            return res.json({ games: [] });
+        }
+
+        const first8NonMatureGames = nonMatureGames.slice(0, 8);
+
+        const filteredGames = first8NonMatureGames.map(game => ({
+            itadID: game.id
+        }));
+
+        res.json(filteredGames );
+
+    } catch (error) {
+        console.error('Error fetching popular game list:', error);
+        res.status(500).json({ error: 'Failed to fetch popular game list' });
     }
 });
 
