@@ -5,42 +5,50 @@ import '../styles/Games.css';
 function Games() {
     const [games, setGames] = useState([]);
     const [gamePrices, setGamePrices] = useState({});
+    const [lastAppid, setLastAppid] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const fetchGames = async (append = false) => {
+        setLoading(true);
+        try {
+            const response = await axios.get("http://localhost:8000/gameItad", {
+                params: {
+                    last_appid: append && lastAppid ? lastAppid : 0,
+                },
+            });
+
+            const { games: newGames, lastAppid: newLastAppid } = response.data;
+
+            const itadIDs = newGames.map(game => game.itadID);
+            if (!itadIDs.length) return;
+
+            const gameInfoResponse = await axios.post("http://localhost:8000/gameInfo", { itadIDs });
+            const fetchedGames = gameInfoResponse.data.map((game, index) => ({
+                ...game,
+                appid: newGames[index].appid,
+            }));
+
+            setGames(prev => append ? [...prev, ...fetchedGames] : fetchedGames);
+            setLastAppid(newLastAppid);
+
+            const priceResponse = await axios.post("http://localhost:8000/game", itadIDs);
+            const prices = priceResponse.data.reduce((acc, curr) => {
+                acc[curr.itadID] = {
+                    priceRegular: curr.priceRegular,
+                    priceDiscount: curr.priceDiscount,
+                };
+                return acc;
+            }, {});
+            setGamePrices(prev => ({ ...prev, ...prices }));
+
+        } catch (error) {
+            console.error("Error fetching games:", error);
+        }
+        setLoading(false);
+    };
 
     useEffect(() => {
-        axios.get("http://localhost:8000/gameItad")
-            .then((response) => {
-                const itadIDs = response.data;
-
-                if (!itadIDs.length) return;
-
-                axios.post("http://localhost:8000/gameInfo", { itadIDs })
-                    .then((gameResponse) => {
-                        const fetchedGames = gameResponse.data;
-                        setGames(fetchedGames);
-
-
-                        const itadIDsForPrices = fetchedGames.map(game => game.itadID).filter(id => id);
-
-                        if (itadIDsForPrices.length > 0) {
-                            
-                            axios.post("http://localhost:8000/game", itadIDsForPrices )
-                                .then((priceResponse) => {
-                                    // console.log(priceResponse);
-                                    const prices = priceResponse.data.reduce((acc, curr) => {
-                                        acc[curr.itadID] = {
-                                            priceRegular: curr.priceRegular,
-                                            priceDiscount: curr.priceDiscount,
-                                        };
-                                        return acc;
-                                    }, {});
-                                    setGamePrices(prices);
-                                })
-                                .catch((error) => console.error("Error fetching prices:", error));
-                        }
-                    })
-                    .catch((error) => console.error("Error fetching game info:", error));
-            })
-            .catch((error) => console.error("Error fetching ITAD IDs:", error));
+        fetchGames();
     }, []);
 
     return (
@@ -64,7 +72,7 @@ function Games() {
                                 <div>
                                     <span>
                                         {gamePrices[game.itadID]?.priceDiscount} 
-                                    </span>                                   
+                                    </span>        
                                 </div>
 
                             </div>
@@ -73,8 +81,8 @@ function Games() {
                 ))}
             </div>
             <div className="buttonLoad">
-                <button>
-                    Load More
+                <button onClick={() => fetchGames(true)} disabled={loading}>
+                    {loading ? 'Loading...' : 'Load More'}
                 </button>
             </div>
         </div>

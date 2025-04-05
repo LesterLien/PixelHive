@@ -1,12 +1,10 @@
-
-import { Container } from 'react-bootstrap';
 import { Navbar } from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
 import { NavDropdown } from 'react-bootstrap';
 import '../styles/NavBar.css';
 import { BsFillPersonFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import logo from '../images/logo.webp';
+import logo from '../assets/images/logo.webp';
 
 function NavBar() {
     return (
