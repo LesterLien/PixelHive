@@ -11,18 +11,21 @@ function Games() {
     const fetchGames = async (append = false) => {
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8000/gameItad", {
+            const gameItadResponse = await axios.get("http://localhost:8000/gameItad", {
                 params: {
                     last_appid: append && lastAppid ? lastAppid : 0,
                 },
             });
 
-            const { games: newGames, lastAppid: newLastAppid } = response.data;
+            const { games: newGames, lastAppid: newLastAppid } = gameItadResponse.data;
 
             const itadIDs = newGames.map(game => game.itadID);
             if (!itadIDs.length) return;
 
-            const gameInfoResponse = await axios.post("http://localhost:8000/gameInfo", { itadIDs });
+            const gameInfoResponse = await axios.post("http://localhost:8000/gameInfo", { 
+                itadIDs,
+                imageType: "boxart",
+            });
             const fetchedGames = gameInfoResponse.data.map((game, index) => ({
                 ...game,
                 appid: newGames[index].appid,
@@ -52,40 +55,34 @@ function Games() {
     }, []);
 
     return (
-        <div className="bodyLayout">
-            <h1 className="title">Games</h1>
-
-            <div className="gamesLayout">
-                {games.map((game) => (
-                    <div key={game.itadID} className="game">
-                        {game.image && <img src={game.image} alt={game.name} />}
-                        <div className="content">
-                            <div className="name" data-name={game.name}>
-                                    <span>{game.name}</span>
+        <div className="gamesPage-body">
+        <h1 className="gamesPage-title">Games</h1>
+        <div className="gamesPage-grid">
+            {games.map((game) => (
+                <div key={game.itadID} className="gamesPage-card">
+                    {game.image && <img src={game.image} alt={game.name} />}
+                    <div className="gamesPage-cardContent">
+                        <div className="gamesPage-name" data-name={game.name}>
+                            <span>{game.name}</span>
+                        </div>
+                        <div className="gamesPage-price">
+                            <div>
+                                <span>{gamePrices[game.itadID]?.priceRegular}</span>
                             </div>
-                            <div className="price">
-                                <div>
-                                    <span>
-                                    {gamePrices[game.itadID]?.priceRegular}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span>
-                                        {gamePrices[game.itadID]?.priceDiscount} 
-                                    </span>        
-                                </div>
-
+                            <div>
+                                <span>{gamePrices[game.itadID]?.priceDiscount}</span>        
                             </div>
                         </div>
                     </div>
-                ))}
-            </div>
-            <div className="buttonLoad">
-                <button onClick={() => fetchGames(true)} disabled={loading}>
-                    {loading ? 'Loading...' : 'Load More'}
-                </button>
-            </div>
+                </div>
+            ))}
         </div>
+        <div className="gamesPage-buttonLoad">
+            <button onClick={() => fetchGames(true)} disabled={loading}>
+                {loading ? 'Loading...' : 'Load More'}
+            </button>
+        </div>
+    </div>
     );
 }
 
