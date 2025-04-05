@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/gameItad', async (req, res) => {
+    const {last_appid = 0} = req.query
     try {
         const gameListResponse = await axios.get('https://api.steampowered.com/IStoreService/GetAppList/v1/', {
             params: {
@@ -21,13 +22,16 @@ app.get('/gameItad', async (req, res) => {
                 include_dlc: false,
                 key: process.env.REACT_APP_STEAM_API_KEY,
                 max_results: 15,
+                last_appid: last_appid,
             }
         });
 
         const games = gameListResponse.data.response.apps || [];
-        const first15Games = games.slice(0, 15);
+        if (!games.length) 
+            return res.json({ games: [], lastAppid: null });
+        
 
-        const gameDataPromises = first15Games.map(async (game) => {
+        const gameDataPromises = games.map(async (game) => {
             try {
                 const itadLookupResponse = await axios.get('https://api.isthereanydeal.com/games/lookup/v1', {
                     params: {
@@ -38,7 +42,7 @@ app.get('/gameItad', async (req, res) => {
 
                 const itadID = itadLookupResponse.data?.game?.id;
 
-                return itadID;
+                return {itadID, appid: game.appid };
             } catch (error) {
                 console.error(`Error fetching details for appid ${game.appid}`, error);
                 return null;
@@ -46,9 +50,11 @@ app.get('/gameItad', async (req, res) => {
         });
 
         const itadIDs = await Promise.all(gameDataPromises);
-        const filteredItadIDs = itadIDs.filter(id => id !== null);
+        const filteredGames = itadIDs.filter(id => id !== null);
 
-        res.json(filteredItadIDs);
+        const nextLastGame = games[games.length - 1].appid;
+
+        res.json({ games: filteredGames, lastAppid: nextLastGame });
 
     } catch (error) {
         console.error('Error fetching game list:', error);
@@ -119,6 +125,7 @@ app.post('/game', async (req, res) => {
 
         
         if (!gamePriceResponse.data) {
+    
             return res.status(404).json({ error: "No price data found for the provided game IDs" });
         }
 
