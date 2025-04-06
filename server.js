@@ -200,6 +200,101 @@ app.get('/gamePopular', async (req, res) => {
     }
 });
 
+app.get('/gameWaitlisted', async (req, res) => {
+    try {
+        let nonMatureGames = [];
+        let offset = 0;
+        const batchSize = 20;
+
+        while(nonMatureGames.length < 10) {
+            const gameListResponse = await axios.get('https://api.isthereanydeal.com/stats/most-waitlisted/v1', {
+                params: {
+                    key: process.env.REACT_APP_ITAD_API_KEY,
+                    limit: batchSize,
+                    offset: offset,
+                }
+            });
+
+            const games = gameListResponse.data || [];
+            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 200);
+
+            nonMatureGames = nonMatureGames.concat(nonMatureBatch);
+
+            offset += batchSize;
+
+            if(games.length < batchSize) {
+                break;
+            }
+        }
+
+        if (!nonMatureGames.length) {
+            return res.json({ games: [] });
+        }
+
+        const first10NonMatureGames = nonMatureGames.slice(0, 10);
+
+        const filteredGames = first10NonMatureGames.map(game => ({
+            itadID: game.id
+        }));
+
+        res.json(filteredGames);
+
+
+
+    } catch (error) {
+        console.error('Error fetching waitlisted game list', error);
+        res.status(500).json({error: 'Failed to fetch waitlisted game list' });
+    }
+
+});
+
+app.get('/gameCollected', async (req, res) => {
+    try {
+        let nonMatureGames = [];
+        let offset = 0;
+        const batchSize = 20;
+
+        while(nonMatureGames.length < 10) {
+            const gameListResponse = await axios.get('https://api.isthereanydeal.com/stats/most-collected/v1', {
+                params: {
+                    key: process.env.REACT_APP_ITAD_API_KEY,
+                    limit: batchSize,
+                    offset: offset,
+                }
+            });
+
+            const games = gameListResponse.data || [];
+            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 200);
+
+            nonMatureGames = nonMatureGames.concat(nonMatureBatch);
+
+            offset += batchSize;
+
+            if(games.length < batchSize) {
+                break;
+            }
+        }
+
+        if (!nonMatureGames.length) {
+            return res.json({ games: [] });
+        }
+
+        const first10NonMatureGames = nonMatureGames.slice(0, 10);
+
+        const filteredGames = first10NonMatureGames.map(game => ({
+            itadID: game.id
+        }));
+
+        res.json(filteredGames );
+
+
+
+    } catch (error) {
+        console.error('Error fetching collected game list', error);
+        res.status(500).json({error: 'Failed to fetch collected game list' });
+    }
+
+});
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
