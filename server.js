@@ -154,7 +154,6 @@ app.post('/game', async (req, res) => {
     }
 });
 
-
 app.get('/gamePopular', async (req, res) => {
     try {
         let nonMatureGames = [];
@@ -295,6 +294,51 @@ app.get('/gameCollected', async (req, res) => {
     }
 
 });
+
+app.get('/gameTrending', async (req, res) => {
+    try {
+        const gameListResponse = await axios.get('https://api.steampowered.com/ISteamChartsService/GetGamesByConcurrentPlayers/v1/', {
+            params: {
+                key: process.env.REACT_APP_STEAM_API_KEY,
+            }
+        });
+
+        const games = gameListResponse.data.response.ranks || [];
+        if (!games.length) 
+            return res.json({lastAppid: null });
+        
+        const first8TrendingGames = games.slice(0,8);
+
+        const gameDataPromises = first8TrendingGames.map(async (game) => {
+            try {
+                const itadLookupResponse = await axios.get('https://api.isthereanydeal.com/games/lookup/v1', {
+                    params: {
+                        key: process.env.REACT_APP_ITAD_API_KEY,
+                        appid: game.appid, 
+                    }
+                });
+
+                const itadID = itadLookupResponse.data?.game?.id;
+
+                return {itadID};
+            } catch (error) {
+                console.error(`Error fetching details for appid ${game.appid}`, error);
+                return null;
+            }
+        });
+
+        const itadIDs = await Promise.all(gameDataPromises);
+        const filteredGames = itadIDs.filter(id => id !== null);
+
+        res.json(filteredGames);
+
+    } catch (error)
+    {
+        console.error('Error fetching trending game list', error);
+        res.status(500).json({error: 'Failed to fetch trending game list' });
+    }
+});
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
