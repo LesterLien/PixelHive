@@ -102,7 +102,7 @@ app.post('/gameInfo', async (req, res) => {
     }
 });
 
-app.post('/game', async (req, res) => {
+app.post('/gamePrice', async (req, res) => {
     const itadIDs = req.body;
 
     
@@ -339,6 +339,37 @@ app.get('/gameTrending', async (req, res) => {
     }
 });
 
+app.get('/shops', async (req, res) => {
+    const {shopCount = 0} = req.query
+    try {
+        const gameShopResponse = await axios.get('https://api.isthereanydeal.com/service/shops/v1', {
+            params: {
+
+                country: 'US',
+            }
+        });
+
+            const shops = gameShopResponse.data;
+            if (!shops.length) {
+                return res.json({shops:{}, shopCount: shops.length});
+            }
+
+            
+            const formattedShops = shops.map(shops => ({
+                title: shops.title,
+                deals: shops.deals,
+                games: shops.games,
+
+            }));
+            
+            res.json({shops: formattedShops, shopCount: shops.length});
+
+    } catch (error)
+    {
+        console.error('Error fetching game shop deals', error);
+        res.status(500).json({error: 'Failed to fetch game shop deals'});
+    }
+});
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

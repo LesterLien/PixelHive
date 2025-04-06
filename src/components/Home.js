@@ -47,7 +47,7 @@ function Home() {
             setGamesCollected(updatedCollectedGames);
             setGamesTrending(updatedTrendingGames);
 
-            const priceResponse = await axios.post("http://localhost:8000/game", [
+            const priceResponse = await axios.post("http://localhost:8000/gamePrice", [
                 ...itadIDsPopular, 
                 ...itadIDsWaitlisted, 
                 ...itadIDsCollected,
