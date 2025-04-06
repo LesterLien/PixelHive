@@ -29,7 +29,7 @@ function Games() {
             if (!itadIDs.length) return;
 
             setLoadingGameInfo(true); 
-            
+
             const gameInfoResponse = await axios.post("http://localhost:8000/gameInfo", { 
                 itadIDs,
                 imageType: "boxart",
@@ -43,7 +43,7 @@ function Games() {
             setGames(prev => append ? [...prev, ...fetchedGames] : fetchedGames);
             setLastAppid(newLastAppid);
 
-            const priceResponse = await axios.post("http://localhost:8000/game", itadIDs);
+            const priceResponse = await axios.post("http://localhost:8000/gamePrice", itadIDs);
             const prices = priceResponse.data.reduce((acc, curr) => {
                 acc[curr.itadID] = {
                     priceRegular: curr.priceRegular,
