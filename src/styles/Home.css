@@ -1,32 +1,35 @@
 .homePage-body {
     padding-bottom: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
 }
 
 .homePage-buttonSearch {
     display: flex;
     justify-content: center;
-    padding: 5px;
+    padding: 10px;
 }
 
 .homePage-title {
     padding-left: 5px;
+    display: flex;
+    justify-content: center;
 }
 
-.homePage-grid {
+.homePage-popular-grid {
     display: flex;
     flex-wrap: wrap;
-    width: 85%;
-    margin-left: 7%;
+    gap: 10px;
+    justify-content: center;
 }
 
-.homePage-card {
-    width: 25%;
-    padding: 5px;
+.homePage-popular-card {
+    width: 24%;
     box-sizing: border-box;
     padding-bottom: 45px;
 }
 
-.homePage-card img {
+.homePage-popular-card img {
     max-width: 100%;
     max-height: 100%;
     border: 1px solid black;
@@ -34,7 +37,8 @@
     border-top-right-radius: 5px;
 }
 
-.homePage-cardContent {
+.homePage-popular-cardContent
+{
     background-color: #C5C6C7;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     width: auto;
@@ -44,7 +48,8 @@
     border: 1px solid black;
 }
 
-.homePage-name {
+.homePage-popular-name 
+{
     font-size: 16px;
     white-space: nowrap;
     overflow: hidden;
@@ -53,7 +58,8 @@
     padding-left: 5px;
 }
 
-.homePage-price {
+.homePage-popular-price 
+{
     font-size: 15px;
     padding-top: 30px;
     display: flex;
@@ -62,4 +68,76 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.homePage-waitlisted-collected-grid 
+{
+    display: flex; 
+    justify-content: space-between;  
+    margin-top: 20px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    
+}
+
+.homePage-waitlisted,
+.homePage-collected 
+{
+    width: 49%;  
+    display: flex;
+    flex-direction: column; 
+    border-radius: 5px;
+}
+
+
+.homePage-waitlisted-card,
+.homePage-collected-card
+ {
+    display: flex;
+    flex-direction: row; 
+    border: 1px solid black;
+    background-color: #C5C6C7;
+    box-sizing: border-box;
+    border-radius: 5px;
+    
+}
+
+
+.homePage-waitlisted-cardContent,
+.homePage-collected-cardContent  {
+    background-color: #C5C6C7;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    overflow: hidden;
+
+
+}
+
+.homePage-waitlisted-name,
+.homePage-collected-name {
+    font-size: 16px;
+    padding-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.homePage-waitlisted-price,
+.homePage-collected-price {
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+.homePage-waitlisted-card img,
+.homePage-collected-card img
+{
+    max-width: 100%;
+    max-height: 100%;
+    border-right: 1px solid black;
+
 }
