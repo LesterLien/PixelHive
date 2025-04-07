@@ -42,16 +42,27 @@ function Shops() {
                     {shops.map((shop) => (
                         <div key={shop.title} className="shopPage-card">
                             <div className="shopPage-card-name">
-                                <div>{shop.title}</div>
+                                <div>
+                                    {shop.title}
+                                </div>
                             </div>
                             <div className='shopPage-card-deals-games'>
                                 <div className="shopPage-card-deals">
-                                     DEALS
-                                    <div>{shop.deals}</div>
+                                     <div className="shopPage-card-name-content">
+                                        DEALS
+                                    </div>
+                                    <div className="shopPage-card-content">
+                                        {shop.deals}
+                                    </div>
                                 </div>
+                                
                                 <div className="shopPage-card-games">
-                                     GAMES
-                                    <div>{shop.games}</div>
+                                    <div className="shopPage-card-name-content">
+                                        GAMES
+                                    </div>
+                                    <div className="shopPage-card-content">
+                                        {shop.games}
+                                    </div>
                                 </div>
                             </div>
                         </div>
