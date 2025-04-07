@@ -130,19 +130,31 @@ app.post('/gamePrice', async (req, res) => {
         }
 
         const priceData = gamePriceResponse.data;
+     
 
-        const formattedPrices = priceData.map(game => {
+        const formattedPrices = itadIDs.map(itadID => {
+            const game = priceData.find(game => game.id === itadID);
+            if (!game) {
+                return {
+                    itadID: itadID,
+                    priceRegular: "No data",
+                    priceDiscount: "No data",
+                };
+            }
             const deals = game.deals || [];
             const deal = deals.length > 0 ? deals[0] : null;
-        
-            const priceRegular = deal?.regular?.amount || null;
+
+            const priceRegular = deal?.regular?.amount;
             const priceDiscount = deal?.price?.amount || priceRegular;
 
-        
+
+            const priceRegularFormatted = priceRegular === 0 ? "Free" : `Regular: $${priceRegular}`;
+            const priceDiscountFormatted = priceDiscount === priceRegular ? "No Discount" : (priceDiscount === 0 ? "Free" : `Discount: $${priceDiscount}`);
+
             return {
                 itadID: game.id, 
-                priceRegular: priceRegular === null ? "Free" : `Regular: $${priceRegular}`,
-                priceDiscount: priceDiscount === priceRegular ? "No Discount" : `Discount: $${priceDiscount}`,
+                priceRegular: priceRegularFormatted,
+                priceDiscount: priceDiscountFormatted,
             };
         });
 
