@@ -1,5 +1,78 @@
-.leftscreen {
-    width: 50vh;
-    margin: 20cm;
-
-}
+.loginPage-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8%;
+  }
+  
+  .loginPage-login-box {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loginPage-login-form-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .loginPage-form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .loginPage-form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+  }
+  
+  .loginPage-form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  .loginPage-form-group input:focus {
+    border-color: #C9AD93;
+    box-shadow: 0 0 0 2px #f3e1cd;
+  }
+  
+  .loginPage-submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #C9AD93;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .loginPage-submit-button:hover {
+    background-color: #cc9e74;
+  }
+  
+  .loginPage-signup-link {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  
+  .loginPage-signup-link a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .loginPage-signup-link a:hover {
+    font-weight: bold;
+  }
+  
