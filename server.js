@@ -5,9 +5,53 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
+const users = [];
+const bcrypt = require('bcrypt');
+
+
 
 app.use(cors());
 app.use(express.json());
+
+
+
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+app.post('/users', async (req,res) => {
+    try {
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+        
+        const user = {
+            name: req.body.name,
+            password: hashPassword
+        };
+    
+        users.push(user);
+        res.status(201).send();
+
+    } catch {
+        res.status(500).send();
+    }
+});
+
+app.post('/users/login', async (req,res) => {
+    const user = users.find(user =>  user.name = req.body.name);
+    if (user == null) {
+        return res.status(400).send("Cannot find user");
+    }
+    try {
+        if(await bcrypt.compare(req.body.password, user.password)) {
+            res.send("Success");
+        } else {
+            res.send("Not Allowed");
+        }
+
+    } catch {
+        res.status(500).send();
+    }
+});
 
 app.get('/', (req, res) => {
     res.json('template');
