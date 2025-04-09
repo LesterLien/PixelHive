@@ -5,52 +5,48 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-const users = [];
 const bcrypt = require('bcrypt');
-
+const db = require('./database/db');
 
 
 app.use(cors());
 app.use(express.json());
 
 
-
-app.get('/users', (req, res) => {
-    res.json(users);
-});
-
-app.post('/users', async (req,res) => {
-    try {
-        const hashPassword = await bcrypt.hash(req.body.password, 10);
-        
-        const user = {
-            name: req.body.name,
-            password: hashPassword
-        };
+app.post('/register', async (req,res) => {
+    const {username, password} = req.body;
+    const hashPassword = await bcrypt.hash(password, 10);
     
-        users.push(user);
-        res.status(201).send();
-
-    } catch {
-        res.status(500).send();
-    }
+    
+    db.run(
+        `INSERT INTO users (username, password) VALUES(?,?)`, 
+        [username, hashPassword], 
+        function(err) {
+            if (err) {
+                return res.status(400).json({ error: 'Username already exists.' });
+            }
+            res.json({ message: 'User registered.' });
+        }
+    );
 });
 
-app.post('/users/login', async (req,res) => {
-    const user = users.find(user =>  user.name = req.body.name);
-    if (user == null) {
-        return res.status(400).send("Cannot find user");
-    }
-    try {
-        if(await bcrypt.compare(req.body.password, user.password)) {
-            res.send("Success");
-        } else {
-            res.send("Not Allowed");
-        }
+app.post('/login', (req,res) => {
+    const {username, password} = req.body;
 
-    } catch {
-        res.status(500).send();
-    }
+    db.get(
+        `SELECT * FROM users WHERE username = ?`,
+        [username],
+        async (err, user) => {
+            if (!user) {
+                return res.status(400).json({ error: 'Username does not exist.' });
+            }
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+                return res.status(400).json({ error: 'Invalid password.' });
+            }
+            res.json({ message: 'Login successful!' });
+        }
+    );
 });
 
 app.get('/', (req, res) => {

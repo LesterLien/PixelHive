@@ -6,6 +6,7 @@ import Wishlist from './Wishlist';
 import Login from './Login';
 import Account from './Account';
 import Shops from './Shops';
+import Register from './Register';
 
 function Navigator() {
   return (
@@ -21,6 +22,7 @@ function Navigator() {
 
 
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />
 
     </Routes>
