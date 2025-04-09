@@ -1,4 +1,5 @@
 import '../styles/Register.css';
+import { Link } from 'react-router-dom';
 
 function Register(){
     return (
@@ -8,8 +9,8 @@ function Register(){
               <h2>Register</h2>
               <form>
                 <div className="registerPage-form-group">
-                  <label htmlFor="email">Email Address</label>
-                  <input type="email" id="email" placeholder="Enter your email" />
+                  <label htmlFor="username">Name</label>
+                  <input type="username" id="username" placeholder="Enter your username" />
                 </div>
     
                 <div className="registerPage-form-group">
@@ -21,7 +22,7 @@ function Register(){
               </form>
     
               <div className="registerPage-signup-link">
-                <p>Already have an account? <a href="/login">Sign in</a></p>
+                <p>Already have an account? <Link to="/login">Sign in</Link></p>
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import '../styles/Login.css';
+import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.webp';
 
 function Login() {
@@ -9,8 +10,8 @@ function Login() {
           <h2>Login</h2>
           <form>
             <div className="loginPage-form-group">
-              <label htmlFor="email">Email Address</label>
-              <input type="email" id="email" placeholder="Enter your email" />
+              <label htmlFor="username">Name</label>
+              <input type="username" id="username" placeholder="Enter your username" />
             </div>
 
             <div className="loginPage-form-group">
@@ -22,7 +23,7 @@ function Login() {
           </form>
 
           <div className="loginPage-signup-link">
-            <p>Don't have an account? <a href="/register">Sign up</a></p>
+            <p>Don't have an account? <Link to="/register">Sign up</Link></p>
           </div>
         </div>
       </div>
