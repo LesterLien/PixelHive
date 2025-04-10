@@ -75,4 +75,16 @@
   .registerPage-signup-link a:hover {
     font-weight: bold;
   }
+
+  .registerPage-error-message {
+    color: #ff4d4f; 
+    background-color: #ffecec; 
+    border: 1px solid #ffb3b3;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+  }
   
