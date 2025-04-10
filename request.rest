@@ -2,17 +2,17 @@ GET http://localhost:8000/users
 
 ###
 
-POST http://localhost:8000/users
+POST http://localhost:8000/login
 Content-Type: application/json
 
 {
-
-
+    "username": "test",
+    "password": "123"
 }
 
 ###
 
-POST http://localhost:8000/users/login
+POST http://localhost:8000/register
 Content-Type: application/json
 
 {

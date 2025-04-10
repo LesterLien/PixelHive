@@ -21,6 +21,7 @@ function Login() {
 
         if (response.status === 200) {
           navigate('/'); 
+          // console.log("successful");
         }
       } catch (error) {
         if (error.response && error.response.data && error.response.data.error) {
@@ -37,7 +38,7 @@ function Login() {
       <div className="loginPage-login-box">
         <div className="loginPage-login-form-section">
           <h2>Login</h2>
-          <form onSubmit={{handleSubmit}}>
+          <form onSubmit={handleSubmit}>
             <div className="loginPage-form-group">
               <label htmlFor="username">Name</label>
               <input
