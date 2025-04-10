@@ -21,8 +21,8 @@ app.post('/register', async (req,res) => {
     db.run(
         `INSERT INTO users (username, password) VALUES(?,?)`, 
         [username, hashPassword], 
-        function(err) {
-            if (err) {
+        function(error) {
+            if (error) {
                 return res.status(400).json({ error: 'Username already exists.' });
             }
             res.json({ message: 'User registered.' });
@@ -36,7 +36,7 @@ app.post('/login', (req,res) => {
     db.get(
         `SELECT * FROM users WHERE username = ?`,
         [username],
-        async (err, user) => {
+        async (error, user) => {
             if (!user) {
                 return res.status(400).json({ error: 'Username does not exist.' });
             }
