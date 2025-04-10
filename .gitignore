@@ -2,7 +2,7 @@
 .env
 
 # GET and POST
-.request.rest
+request.rest
 
 # database
 /server/database/*.db
