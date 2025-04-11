@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import '../styles/Games.css';
+import { AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
+
 
 function Games() {
     const [games, setGames] = useState([]);
@@ -62,6 +65,17 @@ function Games() {
         }
     };
 
+    const toggleFavorite = (itadID) => {
+        setGames(prevGames => 
+            prevGames.map(game => 
+                game.itadID === itadID 
+                    ? { ...game, favoriteStatus: !game.favoriteStatus } 
+                    : game
+            )
+        );
+    };
+
+
     useEffect(() => {
         fetchGames();
     }, []); 
@@ -77,12 +91,17 @@ function Games() {
                             <div className="gamesPage-name" data-name={game.name}>
                                 <span>{game.name}</span>
                             </div>
-                            <div className="gamesPage-price">
-                                <div>
-                                    <span>{gamePrices[game.itadID]?.priceRegular}</span>
+                            <div className="gamesPage-price-container">
+                                <div className="gamesPage-price">
+                                    <div>
+                                        <span>{gamePrices[game.itadID]?.priceRegular}</span>
+                                    </div>
+                                    <div>
+                                        <span>{gamePrices[game.itadID]?.priceDiscount}</span>        
+                                    </div>
                                 </div>
-                                <div>
-                                    <span>{gamePrices[game.itadID]?.priceDiscount}</span>        
+                                <div className="gamesPage-favorite" onClick={() => toggleFavorite(game.itadID)}>
+                                    {game.favoriteStatus ? <AiFillHeart className='icon' /> : <AiOutlineHeart className='icon' />}
                                 </div>
                             </div>
                         </div>

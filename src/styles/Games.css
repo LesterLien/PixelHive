@@ -47,6 +47,14 @@
     padding-left: 5px;
 }
 
+.gamesPage-price-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .gamesPage-price {
     font-size: 15px;
     padding-top: 30px;
@@ -56,6 +64,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.gamesPage-favorite {
+    margin-left: 10px;
+    margin-top: auto;
 }
 
 .gamesPage-buttonLoad {
@@ -70,4 +83,9 @@
 
 .gamesPage-buttonLoad button:hover {
     background-color: #879A77;
+}
+
+
+.icon {
+    font-size: 30px;
 }
