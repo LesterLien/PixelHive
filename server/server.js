@@ -12,7 +12,7 @@ const db = require('./database/db');
 app.use(cors());
 app.use(express.json());
 
-
+// DATABASE
 app.post('/register', async (req,res) => {
     const {username, password} = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
@@ -48,6 +48,28 @@ app.post('/login', (req,res) => {
         }
     );
 });
+
+app.post('/favorite', (req, res) => {
+    const {user_id, game_id} = req.body;
+
+    db.run(
+        'INSERT INTO favorites(user_id, game_id) VALUES (?,?)',
+        [user_id, game_id],
+        async (error) => {
+            if (!error) {
+                return res.status(400).json({ error: 'Could not favorite game.' });
+            }
+            res.json({ message: 'Game successfully favorited!' });
+        }
+    );
+});
+
+
+
+
+
+//APIS
+
 
 app.get('/', (req, res) => {
     res.json('template');

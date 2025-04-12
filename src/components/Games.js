@@ -73,6 +73,16 @@ function Games() {
                     : game
             )
         );
+
+        // try {
+        //     const response = await axios.post('http://localhost:8000/favorite', {
+        //         user_id,
+        //         game_id: game.itadID, 
+        //     });
+
+        // } catch (error) {
+        //     console.error("Error favoriting games:", error);
+        // }
     };
 
 
