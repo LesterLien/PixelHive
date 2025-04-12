@@ -19,6 +19,10 @@ function Login() {
           password,
         });
 
+        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+        localStorage.setItem('userId', response.data.user_id);
+
         if (response.status === 200) {
           navigate('/'); 
           // console.log("successful");

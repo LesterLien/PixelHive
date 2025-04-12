@@ -7,10 +7,29 @@ require('dotenv').config();
 const app = express();
 const bcrypt = require('bcrypt');
 const db = require('./database/db');
+const jwt = require('jsonwebtoken');
 
 
 app.use(cors());
 app.use(express.json());
+
+// FUNCTIONS
+function authenticateToken(req, res, next){
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if(token == null) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.JWT_ACCESS_TOKEN, (error, user) => {
+        if (error) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+}
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.JWT_ACCESS_TOKEN, {expiresIn: '10m'});
+
+}
 
 // DATABASE
 app.post('/register', async (req,res) => {
@@ -44,22 +63,87 @@ app.post('/login', (req,res) => {
             if (!validPassword) {
                 return res.status(400).json({ error: 'Invalid password.' });
             }
-            res.json({ message: 'Login successful!' });
+
+            const userData = {user_id: user.id, username: user.username}
+
+            const accessToken = generateAccessToken(userData);
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_ACCESS_TOKEN);
+            
+            db.run(`UPDATE users SET access_token = ?, refresh_token = ? WHERE id = ?`,
+                [accessToken, refreshToken, user.id],
+                (error) => {
+                    if (error) {
+                        return res.status(500).json({ error: 'Failed to store token.' });
+                    }
+
+                    res.json({
+                        message: 'Login successful!',
+                        accessToken,
+                        refreshToken,
+                        user_id: user.id
+                    });
+                }
+            );
+              
         }
     );
+
 });
 
-app.post('/favorite', (req, res) => {
+app.post('/favorite', authenticateToken, (req, res) => {
     const {user_id, game_id} = req.body;
 
     db.run(
         'INSERT INTO favorites(user_id, game_id) VALUES (?,?)',
         [user_id, game_id],
         async (error) => {
-            if (!error) {
+            if (error) {
                 return res.status(400).json({ error: 'Could not favorite game.' });
             }
             res.json({ message: 'Game successfully favorited!' });
+        }
+    );
+});
+
+
+app.post('/token', (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) return res.sendStatus(401);
+
+    db.get(`SELECT * FROM users WHERE refresh_token = ?`, [refreshToken], (error, user) => {
+        if (error || !user) return res.sendStatus(403);
+
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_ACCESS_TOKEN, (error) => {
+            if (error) return res.sendStatus(403);
+
+            const newAccessToken = generateAccessToken({
+                user_id: user.id,
+                username: user.username
+            });
+
+            db.run(
+                `UPDATE users SET access_token = ? WHERE id = ?`,
+                [newAccessToken, user.id],
+                (error) => {
+                    if (error) return res.status(500).json({ error: 'Failed to update access token' });
+                    res.json({ accessToken: newAccessToken });
+                }
+            );
+        });
+    });
+});
+
+
+app.delete('/logout', (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) return res.sendStatus(400);
+
+    db.run(
+        `UPDATE users SET refresh_token = NULL WHERE refresh_token = ?`,
+        [refreshToken],
+        function (error) {
+            if (error) return res.status(500).json({ error: 'Failed to logout user.' });
+            res.sendStatus(204);
         }
     );
 });
