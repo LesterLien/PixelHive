@@ -1,12 +1,8 @@
 #!/bin/bash
 
-DB_PATH="./server/database/users.db"
+echo "✅ Running full DB cleanup..."
 
-echo "Clearing 'users' table from $DB_PATH..."
+bash ./scripts/clearUsers.sh
+bash ./scripts/clearFavorites.sh
 
-sqlite3 $DB_PATH <<EOF
-DELETE FROM users;
-DELETE FROM sqlite_sequence WHERE name='users';
-EOF
-
-echo "✅ Database cleared and sequence reset!"
+echo "✅ Database cleanup complete!"
