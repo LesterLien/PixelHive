@@ -80,7 +80,8 @@ app.post('/login', (req,res) => {
                         message: 'Login successful!',
                         accessToken,
                         refreshToken,
-                        user_id: user.id
+                        user_id: user.id,
+                        username: user.username
                     });
                 }
             );
@@ -102,6 +103,15 @@ app.post('/favorite', authenticateToken, (req, res) => {
             }
             res.json({ message: 'Game successfully favorited!' });
         }
+    );
+});
+
+app.post('/navbar', (req, res) => {
+    const {username} = req.body;
+
+    db.run(
+      `SELECT * FROM users WHERE username = ?`,
+        [username] 
     );
 });
 
@@ -328,7 +338,7 @@ app.get('/gamePopular', async (req, res) => {
             });
 
             const games = gameListResponse.data || [];
-            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 200);
+            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 1000);
 
             nonMatureGames = nonMatureGames.concat(nonMatureBatch);
 

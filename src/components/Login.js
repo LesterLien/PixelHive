@@ -22,6 +22,11 @@ function Login() {
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.setItem('userId', response.data.user_id);
+        localStorage.setItem('username', response.data.username);
+
+        console.log(localStorage.getItem('username'));
+        console.log(localStorage.getItem('accessToken'));
+        console.log(localStorage.getItem('refreshToken'));
 
         if (response.status === 200) {
           navigate('/'); 
