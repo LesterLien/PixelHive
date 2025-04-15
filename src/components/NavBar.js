@@ -8,13 +8,7 @@ import logo from '../assets/images/logo.webp';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function NavBar() {
-    const [username, setUsername] = useState(null);
-
-    useEffect(() => {
-        const storedUsername = localStorage.getItem('username');
-        setUsername(storedUsername);
-    }, []);
+function NavBar({ username, setUsername }) {
 
     const handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');

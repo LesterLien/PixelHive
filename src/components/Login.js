@@ -4,9 +4,9 @@ import { useState } from "react";
 import axios from "axios";
 import logo from '../assets/images/logo.webp';
 
-function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+function Login({ setUsername }) {
+  const [username, setUsernameInput] = useState('');
+  const [password, setPasswordInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -24,9 +24,11 @@ function Login() {
         localStorage.setItem('userId', response.data.user_id);
         localStorage.setItem('username', response.data.username);
 
-        console.log(localStorage.getItem('username'));
-        console.log(localStorage.getItem('accessToken'));
-        console.log(localStorage.getItem('refreshToken'));
+        // console.log(localStorage.getItem('username'));
+        // console.log(localStorage.getItem('accessToken'));
+        // console.log(localStorage.getItem('refreshToken'));
+
+        setUsername(response.data.username);
 
         if (response.status === 200) {
           navigate('/'); 
@@ -56,7 +58,7 @@ function Login() {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(event) => {
-                  setUsername(event.target.value);
+                  setUsernameInput(event.target.value);
                   setErrorMessage('');
                 }}
               />
@@ -70,7 +72,7 @@ function Login() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(event) => {
-                  setPassword(event.target.value)
+                  setPasswordInput(event.target.value)
                   setErrorMessage('');
                 }}
               />

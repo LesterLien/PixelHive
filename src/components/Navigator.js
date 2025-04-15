@@ -8,7 +8,7 @@ import Account from './Account';
 import Shops from './Shops';
 import Register from './Register';
 
-function Navigator() {
+function Navigator({ setUsername }) {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -21,7 +21,7 @@ function Navigator() {
 
 
 
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login setUsername={setUsername} />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />
 
