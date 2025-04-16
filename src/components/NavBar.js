@@ -5,8 +5,45 @@ import '../styles/NavBar.css';
 import { BsFillPersonFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.webp';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function NavBar() {
+function NavBar({ username, setUsername }) {
+
+    const handleLogout = async () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+    
+        try {
+            await axios.delete('http://localhost:8000/logout', {
+                data: { token: refreshToken },
+            });
+    
+            localStorage.removeItem('username');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            setUsername(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+    
+        try {
+            await axios.delete('http://localhost:8000/deleteAccount', {
+                data: { token: refreshToken },
+            });
+    
+            localStorage.removeItem('username');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            setUsername(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+    
     return (
         <Navbar className="navbar">
             <Navbar.Brand as={Link} to="/" className="me-auto">
@@ -27,11 +64,18 @@ function NavBar() {
                     </NavDropdown>
                 </Nav>
                 <Nav className="ms-auto nav-dropdown-user"><BsFillPersonFill className='icon'/>
-                    <NavDropdown title="User" id="basic-nav-dropdown">
-                        <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
-                        <NavDropdown.Item as={Link} to="/account">Account</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item as={Link} to="/wishlist">Wishlist</NavDropdown.Item>
+                    <NavDropdown title={username || "User"} id="basic-nav-dropdown">
+                    {!username ? (
+                            <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
+                        ) : (
+                            <>
+                                <NavDropdown.Item as={Link} to="/account">Account</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/wishlist">Wishlist</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleDeleteAccount}>Delete Account</NavDropdown.Item>
+                            </>
+                        )}
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>

@@ -80,7 +80,8 @@ app.post('/login', (req,res) => {
                         message: 'Login successful!',
                         accessToken,
                         refreshToken,
-                        user_id: user.id
+                        user_id: user.id,
+                        username: user.username
                     });
                 }
             );
@@ -91,17 +92,67 @@ app.post('/login', (req,res) => {
 });
 
 app.post('/favorite', authenticateToken, (req, res) => {
-    const {user_id, game_id} = req.body;
+    const { user_id, game_id } = req.body;
+
+    db.get(
+        'SELECT * FROM favorites WHERE user_id = ? AND game_id = ?',
+        [user_id, game_id],
+        (err, row) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database error while checking favorite.' });
+            }
+
+            if (row) {
+                db.run(
+                    'DELETE FROM favorites WHERE user_id = ? AND game_id = ?',
+                    [user_id, game_id],
+                    (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to unfavorite game.' });
+                        }
+                        res.json({ message: 'Game successfully unfavorited!' });
+                    }
+                );
+            } else {
+                db.run(
+                    'INSERT INTO favorites (user_id, game_id) VALUES (?, ?)',
+                    [user_id, game_id],
+                    (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to favorite game.' });
+                        }
+                        res.json({ message: 'Game successfully favorited!' });
+                    }
+                );
+            }
+        }
+    );
+});
+
+app.get('/favorites/:user_id', authenticateToken, (req, res) => {
+    const user_id = req.params.user_id;
+
+    db.all(
+        `SELECT game_id FROM favorites WHERE user_id = ?`,
+        [user_id],
+        (error, rows) => {
+            if (error) {
+                return res.status(500).json({ error: 'Failed to fetch favorites.' });
+            }
+
+            const favoriteGameIDs = rows.map(row => row.game_id);
+            res.json({ favorites: favoriteGameIDs });
+        }
+    );
+});
+
+
+app.post('/navbar', (req, res) => {
+    const {username} = req.body;
 
     db.run(
-        'INSERT INTO favorites(user_id, game_id) VALUES (?,?)',
-        [user_id, game_id],
-        async (error) => {
-            if (error) {
-                return res.status(400).json({ error: 'Could not favorite game.' });
-            }
-            res.json({ message: 'Game successfully favorited!' });
-        }
+      `SELECT * FROM users WHERE username = ?`,
+        [username] 
     );
 });
 
@@ -148,7 +199,24 @@ app.delete('/logout', (req, res) => {
     );
 });
 
+app.delete('/deleteAccount', (req,res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) return res.sendStatus(400);
 
+    db.run(
+        `DELETE FROM users WHERE refresh_token = ?`,
+        [refreshToken],
+        function (error) {
+            if (error) return res.status(500).json({ error: 'Failed to delete user.' });
+    
+            if (this.changes === 0) {
+                return res.status(404).json({ error: 'User not found.' });
+            }
+            res.sendStatus(204);
+        }
+    );
+    
+});
 
 
 
@@ -328,7 +396,7 @@ app.get('/gamePopular', async (req, res) => {
             });
 
             const games = gameListResponse.data || [];
-            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 200);
+            const nonMatureBatch = games.filter(game => game.mature === false && game.count > 1000);
 
             nonMatureGames = nonMatureGames.concat(nonMatureBatch);
 

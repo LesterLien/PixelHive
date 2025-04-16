@@ -43,7 +43,33 @@ function Games() {
                 appid: newGames[index].appid,
             }));
 
-            setGames(prev => append ? [...prev, ...fetchedGames] : fetchedGames);
+
+
+            const accessToken = localStorage.getItem('accessToken');
+            const user_id = localStorage.getItem('userId');
+            let favoriteIDs = [];
+
+            if (accessToken && user_id) {
+                try {
+                    const favoritesResponse = await axios.get(`http://localhost:8000/favorites/${user_id}`, {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    });
+                    favoriteIDs = favoritesResponse.data.favorites;
+                } catch (error) {
+                    console.error("Failed to fetch user favorites:", error);
+                }
+            }
+
+            const gamesWithFavorites = fetchedGames.map(game => ({
+                ...game,
+                favoriteStatus: favoriteIDs.includes(game.itadID),
+            }));
+
+
+
+            setGames(prev => append ? [...prev, ...gamesWithFavorites] : gamesWithFavorites);
             setLastAppid(newLastAppid);
 
             const priceResponse = await axios.post("http://localhost:8000/gamePrice", itadIDs);
@@ -65,25 +91,42 @@ function Games() {
         }
     };
 
-    const toggleFavorite = (itadID) => {
-        setGames(prevGames => 
-            prevGames.map(game => 
-                game.itadID === itadID 
-                    ? { ...game, favoriteStatus: !game.favoriteStatus } 
+    const toggleFavorite = async (itadID) => {
+        const accessToken = localStorage.getItem('accessToken');
+        const user_id = localStorage.getItem('userId');
+    
+        if (!accessToken || !user_id) {
+            console.error("Missing access token or user ID");
+            return;
+        }
+    
+        
+        setGames(prevGames =>
+            prevGames.map(game =>
+                game.itadID === itadID
+                    ? { ...game, favoriteStatus: !game.favoriteStatus }
                     : game
             )
         );
-
-        // try {
-        //     const response = await axios.post('http://localhost:8000/favorite', {
-        //         user_id,
-        //         game_id: game.itadID, 
-        //     });
-
-        // } catch (error) {
-        //     console.error("Error favoriting games:", error);
-        // }
+    
+        try {
+            await axios.post(
+                'http://localhost:8000/favorite',
+                {
+                    user_id,
+                    game_id: itadID
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            );
+        } catch (error) {
+            console.error("Error favoriting game:", error);
+        }
     };
+    
 
 
     useEffect(() => {
@@ -111,7 +154,9 @@ function Games() {
                                     </div>
                                 </div>
                                 <div className="gamesPage-favorite" onClick={() => toggleFavorite(game.itadID)}>
-                                    {game.favoriteStatus ? <AiFillHeart className='icon' /> : <AiOutlineHeart className='icon' />}
+                                    {game.favoriteStatus
+                                        ? <AiFillHeart className='icon' />
+                                        : <AiOutlineHeart className='icon' />}
                                 </div>
                             </div>
                         </div>
