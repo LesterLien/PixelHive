@@ -7,8 +7,10 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.webp';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function NavBar({ username, setUsername }) {
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
@@ -31,7 +33,7 @@ function NavBar({ username, setUsername }) {
         const refreshToken = localStorage.getItem('refreshToken');
     
         try {
-            await axios.delete('http://localhost:8000/deleteAccount', {
+            const response = await axios.delete('http://localhost:8000/deleteAccount', {
                 data: { token: refreshToken },
             });
     
@@ -39,6 +41,9 @@ function NavBar({ username, setUsername }) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             setUsername(null);
+            if (response.status === 204) {
+                navigate('/'); 
+              }
         } catch (error) {
             console.error('Logout failed:', error);
         }
