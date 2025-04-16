@@ -3,5 +3,12 @@
     position: relative;
     height: 50px;
     width: 100%;
+    text-align: center;
+    padding: 1em;
+    margin-top: auto;
 }
 
+.icon-copyright {
+    font-size: 1em;
+    margin-bottom: 2px;
+}

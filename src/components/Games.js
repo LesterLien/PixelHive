@@ -155,8 +155,8 @@ function Games() {
                                 </div>
                                 <div className="gamesPage-favorite" onClick={() => toggleFavorite(game.itadID)}>
                                     {game.favoriteStatus
-                                        ? <AiFillHeart className='icon' />
-                                        : <AiOutlineHeart className='icon' />}
+                                        ? <AiFillHeart className='icon-favorite' />
+                                        : <AiOutlineHeart className='icon-favorite' />}
                                 </div>
                             </div>
                         </div>
