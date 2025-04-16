@@ -199,7 +199,24 @@ app.delete('/logout', (req, res) => {
     );
 });
 
+app.delete('/deleteAccount', (req,res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) return res.sendStatus(400);
 
+    db.run(
+        `DELETE FROM users WHERE refresh_token = ?`,
+        [refreshToken],
+        function (error) {
+            if (error) return res.status(500).json({ error: 'Failed to delete user.' });
+    
+            if (this.changes === 0) {
+                return res.status(404).json({ error: 'User not found.' });
+            }
+            res.sendStatus(204);
+        }
+    );
+    
+});
 
 
 

@@ -26,6 +26,23 @@ function NavBar({ username, setUsername }) {
             console.error('Logout failed:', error);
         }
     };
+
+    const handleDeleteAccount = async () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+    
+        try {
+            await axios.delete('http://localhost:8000/deleteAccount', {
+                data: { token: refreshToken },
+            });
+    
+            localStorage.removeItem('username');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            setUsername(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
     
     return (
         <Navbar className="navbar">
@@ -56,6 +73,7 @@ function NavBar({ username, setUsername }) {
                                 <NavDropdown.Item as={Link} to="/wishlist">Wishlist</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleDeleteAccount}>Delete Account</NavDropdown.Item>
                             </>
                         )}
                     </NavDropdown>
