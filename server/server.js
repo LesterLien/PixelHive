@@ -92,19 +92,60 @@ app.post('/login', (req,res) => {
 });
 
 app.post('/favorite', authenticateToken, (req, res) => {
-    const {user_id, game_id} = req.body;
+    const { user_id, game_id } = req.body;
 
-    db.run(
-        'INSERT INTO favorites(user_id, game_id) VALUES (?,?)',
+    db.get(
+        'SELECT * FROM favorites WHERE user_id = ? AND game_id = ?',
         [user_id, game_id],
-        async (error) => {
-            if (error) {
-                return res.status(400).json({ error: 'Could not favorite game.' });
+        (err, row) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database error while checking favorite.' });
             }
-            res.json({ message: 'Game successfully favorited!' });
+
+            if (row) {
+                db.run(
+                    'DELETE FROM favorites WHERE user_id = ? AND game_id = ?',
+                    [user_id, game_id],
+                    (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to unfavorite game.' });
+                        }
+                        res.json({ message: 'Game successfully unfavorited!' });
+                    }
+                );
+            } else {
+                db.run(
+                    'INSERT INTO favorites (user_id, game_id) VALUES (?, ?)',
+                    [user_id, game_id],
+                    (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to favorite game.' });
+                        }
+                        res.json({ message: 'Game successfully favorited!' });
+                    }
+                );
+            }
         }
     );
 });
+
+app.get('/favorites/:user_id', authenticateToken, (req, res) => {
+    const user_id = req.params.user_id;
+
+    db.all(
+        `SELECT game_id FROM favorites WHERE user_id = ?`,
+        [user_id],
+        (error, rows) => {
+            if (error) {
+                return res.status(500).json({ error: 'Failed to fetch favorites.' });
+            }
+
+            const favoriteGameIDs = rows.map(row => row.game_id);
+            res.json({ favorites: favoriteGameIDs });
+        }
+    );
+});
+
 
 app.post('/navbar', (req, res) => {
     const {username} = req.body;
