@@ -27,7 +27,7 @@ function authenticateToken(req, res, next){
 }
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.JWT_ACCESS_TOKEN, {expiresIn: '10m'});
+    return jwt.sign(user, process.env.JWT_ACCESS_TOKEN, {expiresIn: '30m'});
 
 }
 
@@ -217,6 +217,8 @@ app.delete('/deleteAccount', (req,res) => {
     );
     
 });
+
+
 
 
 

@@ -64,6 +64,19 @@ function Favorites() {
             setLoading(false); 
         }
     };
+
+    // const handleGameRemove = async () => {
+    //     const refreshToken = localStorage.getItem('refreshToken');
+    
+    //     try {
+    //         await axios.delete('http://localhost:8000/removeGame', {
+    //             data: { token: refreshToken },
+    //         });
+
+    //     } catch (error) {
+    //         console.error('Logout failed:', error);
+    //     }
+    // };
     
 
 
@@ -93,6 +106,11 @@ function Favorites() {
                                 </div>
                             </div>
                         </div>
+                        {/* <div className="favoritePage-button-delete">
+                            <button onClick={handleGameRemove}>
+
+                            </button>
+                        </div> */}
                     </div>
                 ))}
             </div>

@@ -45,7 +45,7 @@ function Login({ setUsername }) {
 
 
   return (
-    <div className="loginPage-page-container">
+    <div className="loginPage-body">
       <div className="loginPage-login-box">
         <div className="loginPage-login-form-section">
           <h2>Login</h2>

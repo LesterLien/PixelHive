@@ -66,22 +66,16 @@
     text-overflow: ellipsis;
 }
 
-.favoritesPage-favorite {
-    margin-left: 10px;
-    margin-top: auto;
-}
-
-.favoritesPage-buttonLoad {
+.favoritePage-button-delete {
     display: flex;
     justify-content: center;
     padding: 5px;
 }
 
-.favoritesPage-buttonLoad button {
+.favoritePage-button-delete button {
     background-color: #73787C;
 }
 
-.favoritesPage-buttonLoad button:hover {
+.favoritePage-button-delete button:hover {
     background-color: #879A77;
 }
-

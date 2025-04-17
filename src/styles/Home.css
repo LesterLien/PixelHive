@@ -4,12 +4,6 @@
     margin-right: 100px;
 }
 
-.homePage-buttonSearch {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-
 .homePage-title {
     padding-left: 5px;
     display: flex;
@@ -70,6 +64,9 @@
     text-overflow: ellipsis;
 }
 
+
+
+
 .homePage-waitlisted-collected-grid 
 {
     display: flex; 
@@ -100,6 +97,13 @@
     
 }
 
+.homePage-waitlisted-collected-card img
+{
+    max-width: 100%;
+    max-height: 100%;
+    border-right: 1px solid black;
+
+}
 
 .homePage-waitlisted-collected-cardContent
 {
@@ -131,10 +135,3 @@
 
 }
 
-.homePage-waitlisted-collected-card img
-{
-    max-width: 100%;
-    max-height: 100%;
-    border-right: 1px solid black;
-
-}

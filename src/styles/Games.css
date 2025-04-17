@@ -71,20 +71,20 @@
     margin-top: auto;
 }
 
-.gamesPage-buttonLoad {
+.gamesPage-icon-favorite {
+    font-size: 2em;
+}
+
+.gamesPage-button-load {
     display: flex;
     justify-content: center;
     padding: 5px;
 }
 
-.gamesPage-buttonLoad button {
+.gamesPage-button-load button {
     background-color: #73787C;
 }
 
-.gamesPage-buttonLoad button:hover {
+.gamesPage-button-load button:hover {
     background-color: #879A77;
-}
-
-.icon-favorite {
-    font-size: 2em;
 }
