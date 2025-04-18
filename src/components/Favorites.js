@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import '../styles/Favorites.css';
 import { AiFillHeart } from "react-icons/ai";
-import { AiOutlineHeart } from "react-icons/ai";
 
 
 function Favorites() {
@@ -65,18 +64,24 @@ function Favorites() {
         }
     };
 
-    // const handleGameRemove = async () => {
-    //     const refreshToken = localStorage.getItem('refreshToken');
+    const handleGameRemove = async (game_id) => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const user_id = localStorage.getItem('userId');
+            if (!accessToken || !user_id) return;
     
-    //     try {
-    //         await axios.delete('http://localhost:8000/removeGame', {
-    //             data: { token: refreshToken },
-    //         });
-
-    //     } catch (error) {
-    //         console.error('Logout failed:', error);
-    //     }
-    // };
+            await axios.delete('http://localhost:8000/removeGame', {
+                data: { user_id, game_id },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+    
+            setGames(prevGames => prevGames.filter(game => game.itadID !== game_id));
+        } catch (error) {
+            console.error('Remove favorite game failed:', error);
+        }
+    };
     
 
 
@@ -104,13 +109,11 @@ function Favorites() {
                                         <span>{gamePrices[game.itadID]?.priceDiscount}</span>        
                                     </div>
                                 </div>
+                                <div className="favoritesPage-favorite" onClick={() => handleGameRemove(game.itadID)}>
+                                    <AiFillHeart className='favoritesPage-icon-favorite'/>
+                                </div>
                             </div>
                         </div>
-                        {/* <div className="favoritePage-button-delete">
-                            <button onClick={handleGameRemove}>
-
-                            </button>
-                        </div> */}
                     </div>
                 ))}
             </div>
