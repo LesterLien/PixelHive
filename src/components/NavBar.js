@@ -15,7 +15,7 @@ function NavBar({ username, setUsername }) {
         const refreshToken = localStorage.getItem('refreshToken');
     
         try {
-            await axios.delete('http://localhost:8000/logout', {
+            const response = await axios.delete('http://localhost:8000/logout', {
                 data: { token: refreshToken },
             });
     
@@ -23,6 +23,9 @@ function NavBar({ username, setUsername }) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             setUsername(null);
+            if (response.status === 204) {
+                navigate('/'); 
+              }
         } catch (error) {
             console.error('Logout failed:', error);
         }
@@ -58,7 +61,9 @@ function NavBar({ username, setUsername }) {
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="nav-text">
                     <Nav.Link as={Link} to="/games">Games</Nav.Link>
-                    <Nav.Link as={Link} to="/favorites">Favorites</Nav.Link>
+                    {username && (
+                        <Nav.Link as={Link} to="/favorites">Favorites</Nav.Link>
+                    )}
                 </Nav>
                 <Nav className='nav-dropdown-other'>
                     <NavDropdown title="Other" id="basic-nav-dropdown">
