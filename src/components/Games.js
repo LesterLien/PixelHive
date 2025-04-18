@@ -155,15 +155,15 @@ function Games() {
                                 </div>
                                 <div className="gamesPage-favorite" onClick={() => toggleFavorite(game.itadID)}>
                                     {game.favoriteStatus
-                                        ? <AiFillHeart className='icon' />
-                                        : <AiOutlineHeart className='icon' />}
+                                        ? <AiFillHeart className='gamesPage-icon-favorite' />
+                                        : <AiOutlineHeart className='gamesPage-icon-favorite' />}
                                 </div>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
-            <div className="gamesPage-buttonLoad">
+            <div className="gamesPage-button-load">
                 <button onClick={() => fetchGames(true)} disabled={loading || loadingItad || loadingGameInfo}>
                     {loading ? 'Loading...' : 'Load More'}
                 </button>

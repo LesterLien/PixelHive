@@ -85,9 +85,6 @@ function Home() {
 
     return (
         <div className="homePage-body">
-            {/* <div className="homePage-buttonSearch">
-                <button>Search</button>
-            </div> */}
 
             <h1 className="homePage-title">Trending</h1>
             <div className="homePage-popular-trending-grid">

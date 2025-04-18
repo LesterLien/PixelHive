@@ -5,16 +5,17 @@ import '../styles/NavBar.css';
 import { BsFillPersonFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.webp';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function NavBar({ username, setUsername }) {
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         const refreshToken = localStorage.getItem('refreshToken');
     
         try {
-            await axios.delete('http://localhost:8000/logout', {
+            const response = await axios.delete('http://localhost:8000/logout', {
                 data: { token: refreshToken },
             });
     
@@ -22,6 +23,9 @@ function NavBar({ username, setUsername }) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             setUsername(null);
+            if (response.status === 204) {
+                navigate('/'); 
+              }
         } catch (error) {
             console.error('Logout failed:', error);
         }
@@ -31,7 +35,7 @@ function NavBar({ username, setUsername }) {
         const refreshToken = localStorage.getItem('refreshToken');
     
         try {
-            await axios.delete('http://localhost:8000/deleteAccount', {
+            const response = await axios.delete('http://localhost:8000/deleteAccount', {
                 data: { token: refreshToken },
             });
     
@@ -39,6 +43,9 @@ function NavBar({ username, setUsername }) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             setUsername(null);
+            if (response.status === 204) {
+                navigate('/'); 
+              }
         } catch (error) {
             console.error('Logout failed:', error);
         }
@@ -47,14 +54,16 @@ function NavBar({ username, setUsername }) {
     return (
         <Navbar className="navbar">
             <Navbar.Brand as={Link} to="/" className="me-auto">
-            <img src={logo} alt="PixelHive Logo" className="logo" />
+            <img src={logo} alt="PixelHive Logo" className="nav-logo" />
             PixelHive
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="nav-text">
                     <Nav.Link as={Link} to="/games">Games</Nav.Link>
-                    <Nav.Link as={Link} to="/favorites">Favorites</Nav.Link>
+                    {username && (
+                        <Nav.Link as={Link} to="/favorites">Favorites</Nav.Link>
+                    )}
                 </Nav>
                 <Nav className='nav-dropdown-other'>
                     <NavDropdown title="Other" id="basic-nav-dropdown">
@@ -63,7 +72,7 @@ function NavBar({ username, setUsername }) {
                         <NavDropdown.Item as={Link} to="/contact">Contact Us</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
-                <Nav className="ms-auto nav-dropdown-user"><BsFillPersonFill className='icon'/>
+                <Nav className="ms-auto nav-dropdown-user"><BsFillPersonFill className='nav-icon-user'/>
                     <NavDropdown title={username || "User"} id="basic-nav-dropdown">
                     {!username ? (
                             <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>

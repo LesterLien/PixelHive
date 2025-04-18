@@ -27,7 +27,7 @@ function authenticateToken(req, res, next){
 }
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.JWT_ACCESS_TOKEN, {expiresIn: '10m'});
+    return jwt.sign(user, process.env.JWT_ACCESS_TOKEN, {expiresIn: '30m'});
 
 }
 
@@ -217,6 +217,26 @@ app.delete('/deleteAccount', (req,res) => {
     );
     
 });
+
+app.delete('/removeGame', (req,res) => {
+    const {user_id, game_id} = req.body;
+    if (!user_id && !game_id) return res.sendStatus(400);
+
+    db.run(
+        `DELETE FROM favorites WHERE user_id = ? AND game_id = ?`,
+        [user_id, game_id],
+        function (error) {
+            if (error) return res.status(500).json({ error: 'Failed to delete favorited game.' });
+    
+            if (this.changes === 0) {
+                return res.status(404).json({ error: 'User or favorited game not found.' });
+            }
+            res.sendStatus(204);
+        }
+    );
+});
+
+
 
 
 

@@ -1,26 +1,26 @@
-.gamesPage-body {
+.favoritesPage-body {
     padding-bottom: 50px;
 }
 
-.gamesPage-title {
+.favoritesPage-title {
     padding-left: 5px;
 }
 
-.gamesPage-grid {
+.favoritesPage-grid {
     display: flex;
     flex-wrap: wrap;
     width: 85%;
     margin-left: 7%;
 }
 
-.gamesPage-card {
+.favoritesPage-card {
     width: 20%;
     padding: 5px;
     box-sizing: border-box;
     padding-bottom: 45px;
 }
 
-.gamesPage-card img {
+.favoritesPage-card img {
     max-width: 100%;
     max-height: 100%;
     border: 1px solid black;
@@ -28,7 +28,7 @@
     border-top-right-radius: 5px;
 }
 
-.gamesPage-cardContent {
+.favoritesPage-cardContent {
     background-color: #C5C6C7;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     width: auto;
@@ -38,7 +38,7 @@
     border: 1px solid black;
 }
 
-.gamesPage-name {
+.favoritesPage-name {
     font-size: 16px;
     white-space: nowrap;
     overflow: hidden;
@@ -47,7 +47,7 @@
     padding-left: 5px;
 }
 
-.gamesPage-price-container {
+.favoritesPage-price-container {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -55,7 +55,7 @@
     align-items: center;
 }
 
-.gamesPage-price {
+.favoritesPage-price {
     font-size: 15px;
     padding-top: 30px;
     display: flex;
@@ -66,25 +66,11 @@
     text-overflow: ellipsis;
 }
 
-.gamesPage-favorite {
+.favoritesPage-favorite {
     margin-left: 10px;
     margin-top: auto;
 }
 
-.gamesPage-icon-favorite {
+.favoritesPage-icon-favorite {
     font-size: 2em;
-}
-
-.gamesPage-button-load {
-    display: flex;
-    justify-content: center;
-    padding: 5px;
-}
-
-.gamesPage-button-load button {
-    background-color: #73787C;
-}
-
-.gamesPage-button-load button:hover {
-    background-color: #879A77;
 }

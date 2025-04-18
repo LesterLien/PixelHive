@@ -1,7 +1,14 @@
-.footer {
+.footerPage-body {
     background-color: #879A77;
     position: relative;
     height: 50px;
     width: 100%;
+    text-align: center;
+    padding: 1em;
+    margin-top: auto;
 }
 
+.footerPage-icon-copyright {
+    font-size: 1em;
+    margin-bottom: 2px;
+}

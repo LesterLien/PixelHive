@@ -7,6 +7,7 @@ import Login from './Login';
 import Account from './Account';
 import Shops from './Shops';
 import Register from './Register';
+import Contact from './Contact';
 
 function Navigator({ setUsername }) {
   return (
@@ -18,12 +19,14 @@ function Navigator({ setUsername }) {
 
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/contact" element={<Contact />} />
 
 
 
       <Route path="/login" element={<Login setUsername={setUsername} />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<Account />} />
+
 
     </Routes>
   );
