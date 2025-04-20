@@ -68,8 +68,6 @@ function NavBar({ username, setUsername }) {
                 <Nav className='nav-dropdown-other'>
                     <NavDropdown title="Other" id="basic-nav-dropdown">
                         <NavDropdown.Item as={Link} to="/shops">Shops</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item as={Link} to="/contact">Contact Us</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
                 <Nav className="ms-auto nav-dropdown-user"><BsFillPersonFill className='nav-icon-user'/>
@@ -78,9 +76,6 @@ function NavBar({ username, setUsername }) {
                             <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
                         ) : (
                             <>
-                                <NavDropdown.Item as={Link} to="/account">Account</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/wishlist">Wishlist</NavDropdown.Item>
-                                <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleDeleteAccount}>Delete Account</NavDropdown.Item>
                             </>
