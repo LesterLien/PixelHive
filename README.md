@@ -62,7 +62,8 @@ PixelHive is a personal project — a web application built for PC gamers to exp
    JWT_REFRESH_ACCESS_TOKEN=personal_jwt_refresh_token
 5. **Run the project**
    ```bash
-   npm start
+   npm run start:backend
+   npm run start:frontend
 
 # By Lester Lien
 ---
