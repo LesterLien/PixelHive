@@ -1,6 +1,6 @@
 # PixelHive
 
-PixelHive is a personal project — a web application built for PC gamers to explore, track, and find deals on their favorite games. It uses real-time data from APIs to show trending titles, store discounts, and pricing information.
+PixelHive is a personal project. It is a web application built for PC gamers to explore, track, and find deals on their favorite games. It uses real-time data from APIs to show trending titles, store discounts, and pricing information.
 
 ---
 
